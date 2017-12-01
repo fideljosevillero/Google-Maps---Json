@@ -35,26 +35,106 @@
         document.getElementsByTagName('head')[0].appendChild(script);
       }
 
+      //*** cambio de icon
+      // Origins, anchor positions and coordinates of the marker increase in the X
+        // direction to the right and in the Y direction down.
+        var image = {
+          url: './Beach.png',
+          // This marker is 20 pixels wide by 32 pixels high.
+          /*size: new google.maps.Size(20, 32),
+          // The origin for this image is (0, 0).
+          origin: new google.maps.Point(0, 0),
+          // The anchor for this image is the base of the flagpole at (0, 32).
+          anchor: new google.maps.Point(0, 32)*/
+        };
+
+      //*** end cambio icon
+
       // Loop through the results array and place a marker for each
       // set of coordinates.
       window.eqfeed_callback = function(results) {
         for (var i = 0; i < results.features.length; i++) {
-          var coords = results.features[i].geometry.coordinates;
-          var latLng = new google.maps.LatLng(coords[1],coords[0]);
-          var marker = new google.maps.Marker({
+          var coords        = results.features[i].geometry.coordinates;
+          //var latLng        = new google.maps.LatLng(coords[1],coords[0]);
+          var latLng        = new google.maps.LatLng(coords[0],coords[1]);
+          var descripcion   = results.features[i].description;
+          var title         = results.features[i].title;
+          var image         = results.features[i].image;
+          /*var marker = new google.maps.Marker({
             position: latLng,
-            map: map
-          });
+            map: map,
+            label: 'F',
+            icon: image,
+          });*/
+
+          createMarker(latLng, descripcion, title, image);
+          /*
           //***
           var infowindow = new google.maps.InfoWindow({
-              content: results.features[i].descripcion 
+              content: results.features[i].descripcion
           });
-          marker.addListener('click', function(){
-              infowindow.open(map, marker);
+          // This event expects a click on a marker
+         // When this event is fired the infowindow content is created
+         // and the infowindow is opened
+         google.maps.event.addListener(marker, 'click', function() {
+            
+            // Variable to define the HTML content to be inserted in the infowindow
+            var iwContent = '<div id="iw_container">' +
+            '<div class="iw_title">1111111111111</div>' +
+            '<div class="iw_content"><br /><br /></div></div>';
+            
+            // including content to the infowindow
+            infowindow.setContent(iwContent);
+
+            // opening the infowindow in the current map and at the current marker location
+            infowindow.open(map, marker);
+         });
+          // event to close the infoWindow with a click on the map
+          google.maps.event.addListener(map, 'click', function() {
+            infowindow.close();
           });
           //***
+          */
         }
       }
+      // Crear Marker dinámicamente
+      // This function creates each marker and sets their Info Window content
+      function createMarker(latlng, description, title, image){
+         var marker = new google.maps.Marker({
+            map: map,
+            position: latlng,
+            title: name,
+            label: 'F'
+         });
+
+         var infoWindow = new google.maps.InfoWindow({
+              //content: results.features[i].descripcion
+          });
+
+         // This event expects a click on a marker
+         // When this event is fired the infowindow content is created
+         // and the infowindow is opened
+         google.maps.event.addListener(marker, 'click', function() {
+            
+            // Variable to define the HTML content to be inserted in the infowindow
+            //var contenido = '-'+latlng+" - "+description+" - "+title+" - "+image;
+            var contenido = "<b>" + title + "</b><hr/>" ;
+            contenido     += "<img style='width:200px;' src='" + image + "'/>";
+            contenido     += "<br/>";
+            contenido     += "<i>" + description + "</i>";
+            
+            // including content to the infowindow
+            infoWindow.setContent(contenido);
+
+            // opening the infowindow in the current map and at the current marker location
+            infoWindow.open(map, marker);
+         });
+         // event to close the infoWindow with a click on the map
+        google.maps.event.addListener(map, 'click', function() {
+          infoWindow.close();
+        });
+      }
+
       //***
 
       //***
