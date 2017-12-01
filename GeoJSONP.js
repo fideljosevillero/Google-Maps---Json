@@ -12,7 +12,7 @@ eqfeed_callback({
       "id": "1",
       //**
       "title": "Titulo 1",
-      "description": "<b>Fidel José Villero De Hoyos 1</b><hr/>ARKIX SA",
+      "description": "<b>Fidel José Villero De Hoyos 1</b><hr/>Texto...",
       "image": "./Shikamaru.jpg"
     },
     {
@@ -26,7 +26,7 @@ eqfeed_callback({
       "id": "2",
       //**
       "title": "Titulo 2",
-      "description": "<b>Fidel José Villero De Hoyos 2</b><hr/>ARKIX SA",
+      "description": "<b>Fidel José Villero De Hoyos 2</b><hr/>Texto...",
       "image": "./Shikamaru.jpg"
     },
     {
@@ -40,7 +40,7 @@ eqfeed_callback({
       "id": "3",
       //**
       "title": "Titulo 3",
-      "description": "<b>Fidel José Villero De Hoyos 3</b><hr/>ARKIX SA",
+      "description": "<b>Fidel José Villero De Hoyos 3</b><hr/>Texto...",
       "image": "./Shikamaru.jpg"
     },
     {
@@ -54,7 +54,7 @@ eqfeed_callback({
       "id": "4",
       //**
       "title": "Titulo 4",
-      "description": "<b>Fidel José Villero De Hoyos 4</b><hr/>ARKIX SA",
+      "description": "<b>Fidel José Villero De Hoyos 4</b><hr/>Texto...",
       "image": "./Shikamaru.jpg"
     }
   ]
