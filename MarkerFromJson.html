@@ -2,12 +2,9 @@
 <html>
   <head>
     <style>
-      /* Always set the map height explicitly to define the size of the div
-       * element that contains the map. */
       #map {
         height: 100%;
       }
-      /* Optional: Makes the sample page fill the window. */
       html, body {
         height: 100%;
         margin: 0;
@@ -22,36 +19,18 @@
       function initMap() {
         map = new google.maps.Map(document.getElementById('map'), {
           zoom: 6,
-          //center: new google.maps.LatLng( 2.811371,-72.246094),
           center: new google.maps.LatLng( 10.228437,-73.608398),
           mapTypeId: 'terrain' // 'satellite'// 'roadmap'
         });
 
-        // Create a <script> tag and set the USGS URL as the source.
         var script = document.createElement('script');
-        // This example uses a local copy of the GeoJSON stored at
-        // http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_week.geojsonp
         script.src = './GeoJSONP.js';
         document.getElementsByTagName('head')[0].appendChild(script);
       }
 
-      //*** cambio de icon
-      // Origins, anchor positions and coordinates of the marker increase in the X
-        // direction to the right and in the Y direction down.
-        var image = {
-          url: './Beach.png',
-          // This marker is 20 pixels wide by 32 pixels high.
-          /*size: new google.maps.Size(20, 32),
-          // The origin for this image is (0, 0).
-          origin: new google.maps.Point(0, 0),
-          // The anchor for this image is the base of the flagpole at (0, 32).
-          anchor: new google.maps.Point(0, 32)*/
-        };
+        var urlImage = "./Beach.png";
 
-      //*** end cambio icon
-
-      // Loop through the results array and place a marker for each
-      // set of coordinates.
+      
       window.eqfeed_callback = function(results) {
         for (var i = 0; i < results.features.length; i++) {
           var coords        = results.features[i].geometry.coordinates;
@@ -60,41 +39,10 @@
           var descripcion   = results.features[i].description;
           var title         = results.features[i].title;
           var image         = results.features[i].image;
-          /*var marker = new google.maps.Marker({
-            position: latLng,
-            map: map,
-            label: 'F',
-            icon: image,
-          });*/
+          
 
           createMarker(latLng, descripcion, title, image);
-          /*
-          //***
-          var infowindow = new google.maps.InfoWindow({
-              content: results.features[i].descripcion
-          });
-          // This event expects a click on a marker
-         // When this event is fired the infowindow content is created
-         // and the infowindow is opened
-         google.maps.event.addListener(marker, 'click', function() {
-            
-            // Variable to define the HTML content to be inserted in the infowindow
-            var iwContent = '<div id="iw_container">' +
-            '<div class="iw_title">1111111111111</div>' +
-            '<div class="iw_content"><br /><br /></div></div>';
-            
-            // including content to the infowindow
-            infowindow.setContent(iwContent);
-
-            // opening the infowindow in the current map and at the current marker location
-            infowindow.open(map, marker);
-         });
-          // event to close the infoWindow with a click on the map
-          google.maps.event.addListener(map, 'click', function() {
-            infowindow.close();
-          });
-          //***
-          */
+          
         }
       }
       // Crear Marker dinámicamente
@@ -104,40 +52,31 @@
             map: map,
             position: latlng,
             title: name,
-            label: 'F'
+            label: 'F',
+            icon: urlImage
          });
 
          var infoWindow = new google.maps.InfoWindow({
               //content: results.features[i].descripcion
           });
 
-         // This event expects a click on a marker
-         // When this event is fired the infowindow content is created
-         // and the infowindow is opened
+         
          google.maps.event.addListener(marker, 'click', function() {
             
-            // Variable to define the HTML content to be inserted in the infowindow
-            //var contenido = '-'+latlng+" - "+description+" - "+title+" - "+image;
             var contenido = "<b>" + title + "</b><hr/>" ;
             contenido     += "<img style='width:200px;' src='" + image + "'/>";
             contenido     += "<br/>";
             contenido     += "<i>" + description + "</i>";
             
-            // including content to the infowindow
             infoWindow.setContent(contenido);
 
-            // opening the infowindow in the current map and at the current marker location
             infoWindow.open(map, marker);
          });
-         // event to close the infoWindow with a click on the map
         google.maps.event.addListener(map, 'click', function() {
           infoWindow.close();
         });
       }
 
-      //***
-
-      //***
     </script>
     <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC52v1c4eDHm4v7b-hq7jBuFDWa7AB_r9U&callback=initMap">
