@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <script
+        src="https://code.jquery.com/jquery-3.2.1.min.js"
+        integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+        crossorigin="anonymous"></script>
     <style>
       #map {
         height: 100%;
@@ -16,13 +20,17 @@
     <div id="map"></div>
     <script>
       var map;
-      function initMap() {
-        map = new google.maps.Map(document.getElementById('map'), {
-          zoom: 6,
-          center: new google.maps.LatLng( 10.228437,-73.608398),
-          mapTypeId: 'terrain' // 'satellite'// 'roadmap'
-        });
+      var cente_lat     = 10.228437; // 6.20472795; // 10.228437;
+      var center_long   = -73.608398; // -75.579818; // -73.608398;
 
+      
+
+      function initMap() {
+        /*map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 7,
+          center: new google.maps.LatLng( cente_lat,center_long), // new google.maps.LatLng( 10.228437,-73.608398),
+          mapTypeId: 'terrain',// 'terrain' // 'satellite'// 'roadmap'
+        });*/
         var script = document.createElement('script');
         script.src = './GeoJSONP.js';
         document.getElementsByTagName('head')[0].appendChild(script);
@@ -32,28 +40,49 @@
 
       
       window.eqfeed_callback = function(results) {
+
+        map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 7,
+          center: new google.maps.LatLng(results.features[0].Latitud,results.features[0].Longitud),//new google.maps.LatLng( cente_lat,center_long), // new google.maps.LatLng( 10.228437,-73.608398),
+          mapTypeId: 'terrain',// 'terrain' // 'satellite'// 'roadmap'
+        });
+
         for (var i = 0; i < results.features.length; i++) {
+          var nombre      = results.features[i].Nombre;
+          var horario     = results.features[i].Horario;
+          var telefono    = results.features[i].Telefono;
+          var direccion   = results.features[i].Direccion;
+          var tipo        = results.features[i].NombreTipo;
+          var lat         = results.features[i].Latitud;
+          var long        = results.features[i].Longitud;
+          var LatLng      =  new google.maps.LatLng(lat, long);
+          
+
+          /*
           var coords        = results.features[i].geometry.coordinates;
           //var latLng        = new google.maps.LatLng(coords[1],coords[0]);
           var latLng        = new google.maps.LatLng(coords[0],coords[1]);
           var descripcion   = results.features[i].description;
           var title         = results.features[i].title;
           var image         = results.features[i].image;
+          */
           
-
-          createMarker(latLng, descripcion, title, image);
+          createMarker(LatLng, nombre, horario, telefono, tipo, direccion);
           
         }
       }
+      console.log("latitud: "+cente_lat+" Longitud "+center_long);
+      
+
       // Crear Marker dinámicamente
       // This function creates each marker and sets their Info Window content
-      function createMarker(latlng, description, title, image){
+      function createMarker(latLng, nombre, horario, telefono, tipo, direccion){
          var marker = new google.maps.Marker({
             map: map,
-            position: latlng,
+            position: latLng,
             title: name,
-            label: 'F',
-            icon: urlImage
+            //label: 'F',
+            //icon: urlImage
          });
 
          var infoWindow = new google.maps.InfoWindow({
@@ -63,11 +92,15 @@
          
          google.maps.event.addListener(marker, 'click', function() {
             
-            var contenido = "<b>" + title + "</b><hr/>" ;
-            contenido     += "<img style='width:200px;' src='" + image + "'/>";
+            var contenido = "<b>Nombre:</b>" + nombre + "<hr/>" ;
+            contenido     += "<b>Horario:</b> "+horario;
             contenido     += "<br/>";
-            contenido     += "<i>" + description + "</i>";
-            
+            contenido     += "<b>Telefono: </b>" + telefono;
+            contenido     += "<br/>";
+            contenido     += "<b>Direccion: </b>" + direccion;
+            contenido     += "<br/>";
+            contenido     += "<b>Tipo: </b>" + tipo;  
+
             infoWindow.setContent(contenido);
 
             infoWindow.open(map, marker);
